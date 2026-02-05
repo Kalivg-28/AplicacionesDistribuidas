@@ -1,0 +1,12 @@
+Puertos para pruebas
+
+Servicio                    	Puerto
+--------------------------------------
+Oracle DB	                    1521
+SQL Server	                  1433
+Node.js	                      3000
+Flask	                        5000
+Django	                      8000
+React	                        3000
+HTTP	                         80
+HTTPS	                         443
