@@ -1,0 +1,45 @@
+require("node:dns/promises").setServers(["0.0.0.0", "8.8.8.8"]);
+const { MongoClient } = require('mongodb');
+
+async function listDatabases(client) {
+  const databasesList = await client.db().admin().listDatabases();
+  console.log("Databases:");
+  databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+}
+
+async function findAllData(client) {
+  const results = await client
+    .db("sample_mflix")
+    .collection("movies")
+    .find({})
+    .limit(2)
+    .toArray();
+
+  if (results.length > 0) console.log("Title:", results[0].title);
+
+  console.log("Películas encontradas:");
+  console.log(JSON.stringify(results, null, 2));
+}
+
+async function main() {
+const uri = "mongodb+srv://Karen_db_user:KarenLVG817381@cluster0.smqcyvr.mongodb.net/?appName=Cluster0";
+
+  const client = new MongoClient(uri, {
+    serverSelectionTimeoutMS: 8000, 
+  });
+
+  try {
+    console.log("Conectando...");
+    await client.connect();
+    console.log("Conectado correctamente");
+
+    await listDatabases(client);
+    await findAllData(client);
+  } catch (e) {
+    console.error("Error:", e);
+  } finally {
+    await client.close();
+  }
+}
+
+main().catch(console.error);
